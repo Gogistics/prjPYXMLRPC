@@ -1,0 +1,10 @@
+FROM redis:alpine3.10
+
+LABEL name "Alan Tai"
+LABEL email "gogistics@gogistics-tw.com"
+
+# run operations
+RUN apk add --update bash && \
+  rm -rf /var/cache/apk/*
+
+EXPOSE 6379

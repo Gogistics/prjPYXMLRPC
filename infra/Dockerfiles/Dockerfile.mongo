@@ -1,0 +1,17 @@
+FROM mvertes/alpine-mongo
+
+LABEL name "Alan Tai"
+LABEL email "gogistics@gogistics-tw.com"
+
+# copy required files into img
+ADD ./infra/scripts/init/mongo.sh /app/scripts/mongo.sh
+ADD ./infra/scripts/env_variables /app/scripts/env_variables
+
+# run operations
+RUN apk add --update bash && \
+  rm -rf /var/cache/apk/* && \
+  cd /app && \
+  chmod +x ./* && \
+  ./scripts/mongo.sh
+
+EXPOSE 27017

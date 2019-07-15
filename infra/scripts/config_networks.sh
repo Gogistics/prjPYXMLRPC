@@ -1,5 +1,4 @@
-#!/bin/bash
-#
+#!/usr/local/bin/bash
 # Author:
 #   Alan Tai
 # Program:
@@ -27,26 +26,15 @@ trap "finish" INT TERM
 set +e
 
 # create a private subnet
-NETWORK_INSPECTION=$(docker network inspect "$DOCKER_NETWORK_CONTROL_SYSTEM")
+NETWORK_INSPECTION=$(docker network inspect "$DOCKER_NETWORK_ROBOT_SYSTEM")
 EXITCODE_NETWORK_INSPECTION=$?
-[[ $EXITCODE_NETWORK_INSPECTION -ne 0 ]] || (echo "Network, $DOCKER_NETWORK_CONTROL_SYSTEM, exists and will be reset" && docker network rm $DOCKER_NETWORK_CONTROL_SYSTEM)
+[[ $EXITCODE_NETWORK_INSPECTION -ne 0 ]] || (echo "Network, $DOCKER_NETWORK_ROBOT_SYSTEM, exists and will be reset" && docker network rm $DOCKER_NETWORK_ROBOT_SYSTEM)
 
 docker network create \
-  --driver=$DOCKER_NETWORK_CONTROL_SYSTEM_DRIVER \
-  --gateway=$DOCKER_NETWORK_CONTROL_SYSTEM_GATEWAY \
-  --subnet=$DOCKER_NETWORK_CONTROL_SYSTEM_SUBNET \
-  $DOCKER_NETWORK_CONTROL_SYSTEM
-
-# this subnet may not be necessary
-NETWORK_INSPECTION=$(docker network inspect "$DOCKER_NETWORK_SUBSYSTEMS")
-EXITCODE_NETWORK_INSPECTION=$?
-[[ $EXITCODE_NETWORK_INSPECTION -ne 0 ]] || (echo "Network, $DOCKER_NETWORK_SUBSYSTEMS, exists and will be reset" && docker network rm $DOCKER_NETWORK_SUBSYSTEMS)
-
-docker network create \
-  --driver=$DOCKER_NETWORK_SUBSYSTEMS_DRIVER \
-  --gateway=$DOCKER_NETWORK_SUBSYSTEMS_GATEWAY \
-  --subnet=$DOCKER_NETWORK_SUBSYSTEMS_SUBNET \
-  $DOCKER_NETWORK_SUBSYSTEMS
+  --driver=$DOCKER_NETWORK_ROBOT_SYSTEM_DRIVER \
+  --gateway=$DOCKER_NETWORK_ROBOT_SYSTEM_GATEWAY \
+  --subnet=$DOCKER_NETWORK_ROBOT_SYSTEM_SUBNET \
+  $DOCKER_NETWORK_ROBOT_SYSTEM
 
 set -e
 
